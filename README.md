@@ -1,1 +1,1 @@
-# course-work-minesweeper
+# "Software design" course work - Minesweeper game
