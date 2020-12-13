@@ -2,6 +2,8 @@ package minesweeper;
 
 import java.util.Random;
 
+import static minesweeper.Constants.noBombsNearby;
+
 public class GameField {
     private final FieldTile [][] gameField;
     public GameField (int size) {
@@ -34,7 +36,7 @@ public class GameField {
     public void clearGameField() {
         for (int i = 0; i < gameField.length; i++) {
             for (int j = 0; j < gameField.length; j++) {
-                getTile(i, j).setValue('0');
+                getTile(i, j).setValue(noBombsNearby);
             }
         }
     }

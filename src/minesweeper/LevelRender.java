@@ -12,18 +12,14 @@ public class LevelRender {
     public void displayGameField() {
         printNumbers();
         for (int i = 0; i < level.getGameField().length(); i++) {
-            System.out.print(ANSI_BLUE + i + ANSI_RESET + " ");
+            printNumber(Integer.toString(i), true);
             if (i <= 9) System.out.print(" ");
             for (int j = 0; j < level.getGameField().length(); j++) {
-                if (rules.isTileClicked(i, j)) {
-                    System.out.print(ANSI_CYAN + level.getGameField().getTile(i,j).getTile() + "  " + ANSI_RESET);
-                }
-                else if (rules.isBombDisarmed(i, j)) {
-                    System.out.print(ANSI_YELLOW + level.getGameField().getTile(i,j).getTile() + "  " + ANSI_RESET);
-                }
-                else {
-                    System.out.print(level.getGameField().getTile(i,j).getTile() + "  ");
-                }
+                if (rules.isTileClicked(i, j))
+                    printColoredSymbol(ANSI_CYAN, level.getGameField().getTile(i, j).getTile());
+                else if (rules.isBombDisarmed(i, j))
+                    printColoredSymbol(ANSI_YELLOW, level.getGameField().getTile(i, j).getTile());
+                else printColoredSymbol(ANSI_WHITE, level.getGameField().getTile(i, j).getTile());
             }
             System.out.println();
         }
@@ -32,7 +28,7 @@ public class LevelRender {
         System.out.print(" ");
         for (int i = 0; i < level.getGameField().length(); i++) {
             if (i <= 9) System.out.print(" ");
-            printColoredSymbol(ANSI_BLUE, Integer.toString(i));
+            printNumber(Integer.toString(i), false);
         }
         System.out.println();
     }
@@ -40,18 +36,23 @@ public class LevelRender {
     public void displayGameFieldUncovered() {
         printNumbers();
         for (int i = 0; i < level.getGameField().length(); i++) {
-            printColoredSymbol(ANSI_BLUE, Integer.toString(i));
+            printNumber(Integer.toString(i), true);
+            if (i<=9) System.out.print(" ");
             for (int j = 0; j < level.getGameField().length(); j++) {
-                if (level.getGameField().getTile(i,j).isBomb()) printColoredSymbol(ANSI_RED, level.getGameField().getTile(i,j).getValue());
-                else System.out.print(level.getGameField().getTile(i,j).getValue() + "  ");
+                if (level.getGameField().getTile(i,j).isBomb())
+                    printColoredSymbol(ANSI_RED, level.getGameField().getTile(i,j).getValue());
+                else
+                    printColoredSymbol(ANSI_WHITE, level.getGameField().getTile(i,j).getValue());
             }
             System.out.println();
         }
     }
     private void printColoredSymbol(String colorCode, char symbol) {
-        System.out.print(colorCode + symbol + ANSI_RESET + " ");
+        System.out.print(colorCode + symbol + ANSI_RESET + "  ");
     }
-    private void printColoredSymbol(String colorCode, String symbol) {
-        System.out.print(colorCode + symbol + ANSI_RESET + " ");
+    private void printNumber(String symbol, boolean spaceIsAfter) {
+        if (!spaceIsAfter) System.out.print(" ");
+        System.out.print(Constants.ANSI_BLUE + symbol + ANSI_RESET);
+        if (spaceIsAfter) System.out.print(" ");
     }
 }
