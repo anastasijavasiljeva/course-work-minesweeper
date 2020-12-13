@@ -2,13 +2,11 @@ package minesweeper;
 
 import static minesweeper.Constants.*;
 
-public class LevelRender {
-    private final GameLevel level;
-    private final GameRules rules;
+public class LevelRender extends BasicRender{
     public LevelRender(GameLevel level, GameRules rules) {
-        this.level = level;
-        this.rules = rules;
+        super(rules, level);
     }
+    @Override
     public void displayGameField() {
         printNumbers();
         for (int i = 0; i < level.getGameField().length(); i++) {
@@ -32,6 +30,7 @@ public class LevelRender {
         }
         System.out.println();
     }
+    @Override
     public void displayGameFieldUncovered() {
         printNumbers();
         for (int i = 0; i < level.getGameField().length(); i++) {

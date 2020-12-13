@@ -138,16 +138,10 @@ public class GameField {
         return realBombNum == bMarked;
     }
     private boolean allNeighbouringBombsMarkedRight(int x, int y) {
-        int realBombNum = gameField[x][y].getValue()-48; int bMarked = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (isOnTheBoard(x, y, i, j)) {
-                    if (bombIsMarkedRight(x - 1 + i, y - 1 + j)) {
-                        bMarked++;
-                    }
-                }
-            }
-        }
+        int realBombNum = gameField[x][y].getValue()-noBombsNearby; int bMarked = 0;
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                if (isOnTheBoard(x, y, i, j)) if (bombIsMarkedRight(x - 1 + i, y - 1 + j)) bMarked++;
         return realBombNum == bMarked;
     }
     public boolean bombIsClicked (int x, int y) {
