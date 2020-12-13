@@ -48,5 +48,4 @@ public class FieldTile {
     public boolean isClicked() {
         return isClicked;
     }
-
 }

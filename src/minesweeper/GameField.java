@@ -2,6 +2,7 @@ package minesweeper;
 
 import java.util.Random;
 
+import static minesweeper.Constants.bombDisarmed;
 import static minesweeper.Constants.noBombsNearby;
 
 public class GameField {
@@ -20,7 +21,6 @@ public class GameField {
     public FieldTile getTile(int x, int y) {
         return gameField[x][y];
     }
-
     public void generateBombs(int bombs, int tg_x, int tg_y) {
         int actualBombNum = 0;
         while (actualBombNum != bombs) {
@@ -40,19 +40,15 @@ public class GameField {
             }
         }
     }
-    public int generateBomb() {
+    private int generateBomb() {
         Random random = new Random();
         int bomb = random.nextInt()% gameField.length;
         while (bomb >= gameField.length) bomb--;
         if (bomb < 0) bomb = bomb * (-1);
         return bomb;
     }
-    public void countNeighborCoordinates() {
-        for (int i = 0; i < gameField.length; i ++) {
-            for (int j = 0; j < gameField.length; j++) {
-                countTilePerimeter(i,j);
-            }
-        }
+    private void countNeighborCoordinates() {
+        for (int i = 0; i < gameField.length; i ++) for (int j = 0; j < gameField.length; j++) countTilePerimeter(i, j);
     }
     private void countTilePerimeter(int x, int y) {
         for (int i = 0; i < 3; i++) {
@@ -68,18 +64,15 @@ public class GameField {
     private boolean isOnTheBoard(int x, int y, int i, int j) {
         return x - 1 + i >= 0 && x - 1 + i <= gameField.length-1 && y - 1 + j >= 0 && y - 1 + j <= gameField.length-1;
     }
-
-    public boolean isInBorders(int x, int y) {
+    private boolean isInBorders(int x, int y) {
         return x>=0 && x <= gameField.length-1 && y>=0 && y <= gameField.length-1;
     }
     public void markBomb(int x, int y) {
         gameField[x][y].setMarked(!gameField[x][y].isMarked());
     }
-
     public void uncoverIndividualBomb(int x, int y) {
         gameField[x][y].setClicked(true);
     }
-
     public void uncoverAllNeighbors(int x, int y) {
         if (gameField[x][y].getValue() == '0') uncoverZeroes(x, y);
         else {
@@ -88,7 +81,6 @@ public class GameField {
             }
         }
     }
-
     public boolean allBombsMarkedRight(int bombNumber) {
         int bombsMarked = 0;
         for (int i = 0; i < gameField.length; i++) {
@@ -98,29 +90,26 @@ public class GameField {
         }
         return bombsMarked == bombNumber;
     }
-    public boolean bombIsMarked(int x, int y) {
+    private boolean bombIsMarked(int x, int y) {
         return gameField[x][y].isMarked() && gameField[x][y].isBomb();
     }
-
-    public boolean bombIsMarkedRight(int x, int y) {
+    private boolean bombIsMarkedRight(int x, int y) {
         return gameField[x][y].isMarked() && gameField[x][y].isBomb() && !gameField[x][y].isClicked();
     }
     public void disarmBomb(int x, int y) {
-        gameField[x][y].setValue('m');
+        gameField[x][y].setValue(bombDisarmed);
         gameField[x][y].setClicked(true);
     }
     private void uncoverZeroes(int x, int y) {
         if(!isInBorders(x, y))return;
         if(gameField[x][y].isClicked()||gameField[x][y].getValue() != '0')return;
         gameField[x][y].setClicked(true);
-        uncoverZeroes(x-1,y-1);
-        uncoverZeroes(x-1,y+1);
-        uncoverZeroes(x+1,y-1);
-        uncoverZeroes(x+1,y+1);
-        uncoverZeroes(x-1,y);
-        uncoverZeroes(x+1,y);
-        uncoverZeroes(x,y-1);
-        uncoverZeroes(x,y+1);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                uncoverZeroes(x-1+i, y-1+j);
+            }
+        }
+
     }
     public boolean checkForBombsUncovered() {
         for (FieldTile[] fieldTiles : gameField) {

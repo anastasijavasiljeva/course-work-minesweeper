@@ -15,16 +15,16 @@ public class GameRules {
     public boolean isTileClicked(int x, int y) {
         return gameLevel.getGameField().getTile(x, y).isClicked();
     }
-    public boolean isTileMarked(int x, int y) {
+    private boolean isTileMarked(int x, int y) {
         return gameLevel.getGameField().getTile(x, y).isMarked();
     }
-    public boolean isTileBomb(int x, int y) {
+    private boolean isTileBomb(int x, int y) {
         return gameLevel.getGameField().getTile(x, y).isBomb();
     }
     public boolean isBombDisarmed(int x, int y) {
         return isTileBomb(x, y) && (isTileClicked(x, y)||isTileMarked(x, y));
     }
-    public void printKeyHelper() {
+    private void printKeyHelper() {
         System.out.println("Available keys:");
         System.out.println("m x y - mark one bomb, which is on the position (x; y)");
         System.out.println("p x y - uncover one individual cell, which is on the position (x;y)");

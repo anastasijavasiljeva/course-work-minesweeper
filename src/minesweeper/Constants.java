@@ -16,4 +16,5 @@ public class Constants {
     public static char noBombsNearby = 48;
     public static char cellCovered = 'x';
     public static char cellMarked = 'b';
+    public static char bombDisarmed = 'm';
 }

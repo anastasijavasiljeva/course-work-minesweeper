@@ -32,7 +32,6 @@ public class LevelRender {
         }
         System.out.println();
     }
-
     public void displayGameFieldUncovered() {
         printNumbers();
         for (int i = 0; i < level.getGameField().length(); i++) {
