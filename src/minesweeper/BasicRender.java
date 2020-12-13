@@ -21,7 +21,7 @@ public class BasicRender {
             System.out.println();
         }
     }
-    private void printNumbers() {
+    public void printNumbers() {
         System.out.print(" ");
         for (int i = 0; i < level.getGameField().length(); i++) {
             if (i <= 9) System.out.print(" ");

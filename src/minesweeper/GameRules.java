@@ -51,16 +51,34 @@ public class GameRules {
                 System.exit(0);
             }
             case printRules -> printKeyHelper();
-            case markBomb -> gameLevel.getGameField().markBomb(consoleInput.getX(key), consoleInput.getY(key));
-            case uncoverOneCell -> {
-                gameLevel.getGameField().uncoverIndividualBomb(consoleInput.getX(key), consoleInput.getY(key));
-                if (isFirstMove()) setFirstMove(false);
+            case markBomb -> {
+                if (inputOutOfBounds(key)) printOutOfBoundsException();
+                else gameLevel.getGameField().markBomb(consoleInput.getX(key), consoleInput.getY(key));
             }
-            case uncoverCellGroup -> gameLevel.getGameField().uncoverAllNeighbors(consoleInput.getX(key), consoleInput.getY(key));
+            case uncoverOneCell -> {
+                if (inputOutOfBounds(key)) printOutOfBoundsException();
+                else {
+                    gameLevel.getGameField().uncoverIndividualBomb(consoleInput.getX(key), consoleInput.getY(key));
+                    if (isFirstMove()) setFirstMove(false);
+                }
+            }
+            case uncoverCellGroup -> {
+                if (inputOutOfBounds(key)) printOutOfBoundsException();
+                else gameLevel.getGameField().uncoverAllNeighbors(consoleInput.getX(key), consoleInput.getY(key));
+            }
             default -> System.out.println("Sorry, it's impossible to do what you have asked. Consider pressing r to check possible key combinations. ");
         }
-        checkIfGameWon();
-        checkIfGameIsLost(consoleInput.getX(key), consoleInput.getY(key));
+        if (!inputOutOfBounds(key)) {
+            checkIfGameWon();
+            checkIfGameIsLost(consoleInput.getX(key), consoleInput.getY(key));
+        }
+    }
+    private boolean inputOutOfBounds(String key) {
+        return consoleInput.getX(key) > gameLevel.getGameField().length() ||consoleInput.getY(key) > gameLevel.getGameField().length();
+    }
+    private void printOutOfBoundsException(){
+        System.out.println("Oops, your ambitions are a bit too big. ");
+        System.out.println("Slow down, please, and check the numbers on the board again :)");
     }
     private void checkIfGameWon() {
         if (gameLevel.getGameField().allBombsMarkedRight(gameLevel.getBombNumber())) {
