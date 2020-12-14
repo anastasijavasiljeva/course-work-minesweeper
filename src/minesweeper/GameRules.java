@@ -53,11 +53,11 @@ public class GameRules {
             case printRules -> printKeyHelper();
             case markBomb -> {
                 if (inputOutOfBounds(key)) printOutOfBoundsException();
+                else if (tooMuchBombsMarked()) printTooMuchFlagsException();
                 else {
                     gameLevel.getGameField().markBomb(consoleInput.getX(key), consoleInput.getY(key));
                     checkIfGameWon();
                     checkIfGameIsLost(consoleInput.getX(key), consoleInput.getY(key));
-
                 }
             }
             case uncoverOneCell -> {
@@ -67,7 +67,6 @@ public class GameRules {
                     if (isFirstMove()) setFirstMove(false);
                     checkIfGameWon();
                     checkIfGameIsLost(consoleInput.getX(key), consoleInput.getY(key));
-
                 }
             }
             case uncoverCellGroup -> {
@@ -81,6 +80,21 @@ public class GameRules {
             }
             default -> System.out.println("Sorry, it's impossible to do what you have asked. Consider pressing r to check possible key combinations. ");
         }
+    }
+    public void printTooMuchFlagsException() {
+        System.out.println("Wow, I really do appreciate your caution, but slow down a bit, won't you?");
+    }
+    public boolean tooMuchBombsMarked() {
+        return gameLevel.getBombNumber() < countMarkedCellsNumber();
+    }
+    public int countMarkedCellsNumber() {
+        int marked = 0;
+        for (int i = 0; i < gameLevel.getGameField().length(); i++) {
+            for (int j = 0; j < gameLevel.getGameField().length(); j++) {
+                if (gameLevel.getGameField().getTile(i, j).isMarked()) marked++;
+            }
+        }
+        return marked;
     }
     public boolean inputOutOfBounds(String key) {
         return consoleInput.getX(key) > gameLevel.getGameField().length() ||consoleInput.getY(key) > gameLevel.getGameField().length();
