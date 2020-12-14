@@ -53,27 +53,36 @@ public class GameRules {
             case printRules -> printKeyHelper();
             case markBomb -> {
                 if (inputOutOfBounds(key)) printOutOfBoundsException();
-                else gameLevel.getGameField().markBomb(consoleInput.getX(key), consoleInput.getY(key));
+                else {
+                    gameLevel.getGameField().markBomb(consoleInput.getX(key), consoleInput.getY(key));
+                    checkIfGameWon();
+                    checkIfGameIsLost(consoleInput.getX(key), consoleInput.getY(key));
+
+                }
             }
             case uncoverOneCell -> {
                 if (inputOutOfBounds(key)) printOutOfBoundsException();
                 else {
                     gameLevel.getGameField().uncoverIndividualBomb(consoleInput.getX(key), consoleInput.getY(key));
                     if (isFirstMove()) setFirstMove(false);
+                    checkIfGameWon();
+                    checkIfGameIsLost(consoleInput.getX(key), consoleInput.getY(key));
+
                 }
             }
             case uncoverCellGroup -> {
                 if (inputOutOfBounds(key)) printOutOfBoundsException();
-                else gameLevel.getGameField().uncoverAllNeighbors(consoleInput.getX(key), consoleInput.getY(key));
+                else {
+                    gameLevel.getGameField().uncoverAllNeighbors(consoleInput.getX(key), consoleInput.getY(key));
+                    checkIfGameWon();
+                    checkIfGameIsLost(consoleInput.getX(key), consoleInput.getY(key));
+
+                }
             }
             default -> System.out.println("Sorry, it's impossible to do what you have asked. Consider pressing r to check possible key combinations. ");
         }
-        if (!inputOutOfBounds(key)) {
-            checkIfGameWon();
-            checkIfGameIsLost(consoleInput.getX(key), consoleInput.getY(key));
-        }
     }
-    private boolean inputOutOfBounds(String key) {
+    public boolean inputOutOfBounds(String key) {
         return consoleInput.getX(key) > gameLevel.getGameField().length() ||consoleInput.getY(key) > gameLevel.getGameField().length();
     }
     private void printOutOfBoundsException(){
