@@ -54,7 +54,5 @@ public class InputTests {
         gameRules.processUserInput(errorKey);
         String result = out.toString();
         Assert.assertTrue(result.contains("slow down a bit"));
-
     }
-
 }
